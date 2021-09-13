@@ -1,120 +1,68 @@
-struct Pool {
-    pub size: i8,
-}
-struct Bathroom {
-    pub size: i8,
-}
-struct Room {
-    pub size: i8,
-}
-struct House {
-    pub rooms: Vec<Room>,
-    pub pool: Option<Pool>,
-    pub bathrooms: Vec<Bathroom>,
-}
+// #![warn(clippy::pedantic)]
 
-impl House {
-    fn builder() -> RealHouseBuilder {
-        RealHouseBuilder::new()
-    }
-}
+mod house;
 
-struct RealHouseBuilder {
-    pub rooms: Vec<Room>,
-    pub pool: Option<Pool>,
-    pub bathrooms: Vec<Bathroom>,
-}
-
-impl RealHouseBuilder {
-    fn new() -> Self {
-        Self {
-            rooms: Vec::new(),
-            pool: None,
-            bathrooms: Vec::new(),
-        }
-    }
-
-    fn add_room(mut self, room: Room) -> RealHouseBuilder {
-        self.rooms.push(room);
-        self
-    }
-
-    fn pool(mut self, pool: Pool) -> RealHouseBuilder {
-        self.pool = Some(pool);
-        self
-    }
-
-    fn add_bathroom(mut self, bathroom: Bathroom) -> RealHouseBuilder {
-        self.bathrooms.push(bathroom);
-        self
-    }
-
-    fn build(self) -> Result<House, String> {
-        Ok(House {
-            rooms: self.rooms,
-            pool: self.pool,
-            bathrooms: self.bathrooms,
-        })
-    }
-}
-
-struct ToyHouseBuilder {
-    pub rooms: Vec<Room>,
-    pub pool: Option<Pool>,
-    pub bathrooms: Vec<Bathroom>,
-}
-
-impl ToyHouseBuilder {
-    fn new() -> Self {
-        Self {
-            rooms: Vec::new(),
-            pool: None,
-            bathrooms: Vec::new(),
-        }
-    }
-
-    fn add_room(mut self, room: Room) -> ToyHouseBuilder {
-        self.rooms.push(room);
-        self
-    }
-
-    fn pool(mut self, pool: Pool) -> ToyHouseBuilder {
-        self.pool = Some(pool);
-        self
-    }
-
-    fn add_bathroom(mut self, bathroom: Bathroom) -> ToyHouseBuilder {
-        self.bathrooms.push(bathroom);
-        self
-    }
-
-    fn build(self) -> Result<House, String> {
-        Ok(House {
-            rooms: self.rooms,
-            pool: self.pool,
-            bathrooms: self.bathrooms,
-        })
-    }
-}
-
-struct HouseBuildDirector {
-    builder: RealHouseBuilder,
-}
-
-impl HouseBuildDirector {
-    fn new(builder: RealHouseBuilder) -> Self {
-        Self { builder }
-    }
-
-    fn build_pool_house(self) -> Result<House, String> {
-        self.builder
-            .add_bathroom(Bathroom { size: 10 })
-            .add_room(Room { size: 30 })
-            .pool(Pool { size: 0 })
-            .build()
-    }
-}
+use house::{build_director::*, stone_builder::*, wood_builder::*, *};
 
 fn main() {
-    let house = HouseBuildDirector::new(House::builder()).build_pool_house();
+    build_manual_house();
+    build_fancy_house();
+    build_oldie_house();
+}
+
+fn build_manual_house() {
+    let manual_house = Box::new(WoodHouseBuilder::new())
+        .add_rooms(vec![
+            Room { size: 10 },
+            Room { size: 10 },
+            Room { size: 10 },
+        ])
+        .add_bathrooms(vec![Bathroom { size: 10 }])
+        .pool(Pool { size: 30 })
+        .build();
+
+    match manual_house {
+        Ok(house) => println!("{}", house),
+        Err(err) => println!("{}", err),
+    }
+}
+
+fn build_fancy_house() {
+    let fancy_house =
+        HouseBuildDirector::new(Box::new(WoodHouseBuilder::new())).build_fancy_house();
+
+    match fancy_house {
+        Ok(house) => println!("{}", house),
+        Err(err) => println!("{}", err),
+    }
+}
+
+fn build_oldie_house() {
+    let oldie_house =
+        HouseBuildDirector::new(Box::new(StoneHouseBuilder::new())).build_basic_house();
+
+    match oldie_house {
+        Ok(house) => println!("{}", house),
+        Err(err) => println!("{}", err),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_manual_house() {
+        build_manual_house();
+    }
+
+    #[test]
+    fn test_fancy_house() {
+        build_fancy_house();
+    }
+
+    #[test]
+    fn test_oldie_house() {
+        build_oldie_house();
+    }
 }
