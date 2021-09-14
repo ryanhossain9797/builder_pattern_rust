@@ -2,7 +2,7 @@
 
 mod house;
 
-use house::{build_director::*, stone_builder::*, wood_builder::*, *};
+use house::{build_director::*, fancy_builder::*, stone_builder::*, *};
 
 fn main() {
     build_manual_house();

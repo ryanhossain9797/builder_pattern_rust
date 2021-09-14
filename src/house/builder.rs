@@ -1,10 +1,10 @@
+pub mod fancy_builder;
 pub mod stone_builder;
-pub mod wood_builder;
 
 use super::*;
+pub use fancy_builder::*;
 use std::fmt::Display;
 pub use stone_builder::*;
-pub use wood_builder::*;
 
 pub struct House {
     material: String,
