@@ -4,7 +4,8 @@ mod house;
 
 use house::{build_director::*, fancy_builder::*, stone_builder::*, *};
 
-fn main() {
+#[async_std::main]
+async fn main() {
     build_manual_house();
     build_fancy_house();
     build_oldie_house();
