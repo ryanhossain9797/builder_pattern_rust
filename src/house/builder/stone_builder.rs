@@ -18,23 +18,48 @@ impl StoneHouseBuilder {
 }
 
 impl HouseBuilder for StoneHouseBuilder {
-    fn add_rooms(mut self: Box<Self>, mut rooms: Vec<Room>) -> Box<dyn HouseBuilder> {
-        self.rooms.append(&mut rooms);
+    fn add_rooms_of_sizes(mut self: Box<Self>, mut room_sizes: Vec<i8>) -> Box<dyn HouseBuilder> {
+        self.rooms.append(
+            &mut room_sizes
+                .iter()
+                .map(|size| Room {
+                    wall_material: WallMaterial::Stone,
+                    floor_material: FloorMaterial::Stone,
+                    size: *size,
+                })
+                .collect(),
+        );
         self
     }
 
-    fn add_bathrooms(mut self: Box<Self>, mut bathrooms: Vec<Bathroom>) -> Box<dyn HouseBuilder> {
-        self.bathrooms.append(&mut bathrooms);
+    fn add_bathrooms_of_sizes(
+        mut self: Box<Self>,
+        mut bathroom_sizes: Vec<i8>,
+    ) -> Box<dyn HouseBuilder> {
+        self.bathrooms.append(
+            &mut bathroom_sizes
+                .iter()
+                .map(|size| Bathroom {
+                    wall_material: WallMaterial::Stone,
+                    floor_material: FloorMaterial::Stone,
+                    size: *size,
+                })
+                .collect(),
+        );
         self
     }
 
-    fn kitchen(mut self: Box<Self>, kitchen: Kitchen) -> Box<dyn HouseBuilder> {
-        self.kitchen = Some(kitchen);
+    fn kitchen_of_size(mut self: Box<Self>, size: i8) -> Box<dyn HouseBuilder> {
+        self.kitchen = Some(Kitchen {
+            wall_material: WallMaterial::Stone,
+            floor_material: FloorMaterial::Stone,
+            size,
+        });
         self
     }
 
-    fn pool(mut self: Box<Self>, pool: Pool) -> Box<dyn HouseBuilder> {
-        self.pool = Some(pool);
+    fn pool_of_size(mut self: Box<Self>, size: i8) -> Box<dyn HouseBuilder> {
+        self.pool = Some(Pool { size });
         self
     }
 

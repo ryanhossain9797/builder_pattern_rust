@@ -3,4 +3,4 @@ pub mod builder;
 pub mod models;
 
 pub use builder::*;
-pub use models::*;
+use models::*;

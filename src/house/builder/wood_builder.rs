@@ -1,13 +1,13 @@
 use super::*;
-pub struct WoodHouseBuilder {
+pub struct WoodFloorHouseBuilder {
     pub rooms: Vec<Room>,
     pub kitchen: Option<Kitchen>,
     pub bathrooms: Vec<Bathroom>,
     pub pool: Option<Pool>,
 }
 
-impl WoodHouseBuilder {
-    pub fn new() -> WoodHouseBuilder {
+impl WoodFloorHouseBuilder {
+    pub fn new() -> WoodFloorHouseBuilder {
         Self {
             rooms: Vec::new(),
             kitchen: None,
@@ -17,24 +17,49 @@ impl WoodHouseBuilder {
     }
 }
 
-impl HouseBuilder for WoodHouseBuilder {
-    fn add_rooms(mut self: Box<Self>, mut rooms: Vec<Room>) -> Box<dyn HouseBuilder> {
-        self.rooms.append(&mut rooms);
+impl HouseBuilder for WoodFloorHouseBuilder {
+    fn add_rooms_of_sizes(mut self: Box<Self>, mut room_sizes: Vec<i8>) -> Box<dyn HouseBuilder> {
+        self.rooms.append(
+            &mut room_sizes
+                .iter()
+                .map(|size| Room {
+                    wall_material: WallMaterial::Brick,
+                    floor_material: FloorMaterial::Wood,
+                    size: *size,
+                })
+                .collect(),
+        );
         self
     }
 
-    fn add_bathrooms(mut self: Box<Self>, mut bathrooms: Vec<Bathroom>) -> Box<dyn HouseBuilder> {
-        self.bathrooms.append(&mut bathrooms);
+    fn add_bathrooms_of_sizes(
+        mut self: Box<Self>,
+        mut bathroom_sizes: Vec<i8>,
+    ) -> Box<dyn HouseBuilder> {
+        self.bathrooms.append(
+            &mut bathroom_sizes
+                .iter()
+                .map(|size| Bathroom {
+                    wall_material: WallMaterial::Brick,
+                    floor_material: FloorMaterial::Marble,
+                    size: *size,
+                })
+                .collect(),
+        );
         self
     }
 
-    fn kitchen(mut self: Box<Self>, kitchen: Kitchen) -> Box<dyn HouseBuilder> {
-        self.kitchen = Some(kitchen);
+    fn kitchen_of_size(mut self: Box<Self>, size: i8) -> Box<dyn HouseBuilder> {
+        self.kitchen = Some(Kitchen {
+            wall_material: WallMaterial::Brick,
+            floor_material: FloorMaterial::Wood,
+            size,
+        });
         self
     }
 
-    fn pool(mut self: Box<Self>, pool: Pool) -> Box<dyn HouseBuilder> {
-        self.pool = Some(pool);
+    fn pool_of_size(mut self: Box<Self>, size: i8) -> Box<dyn HouseBuilder> {
+        self.pool = Some(Pool { size });
         self
     }
 
