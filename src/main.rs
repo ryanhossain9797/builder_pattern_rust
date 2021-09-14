@@ -11,7 +11,7 @@ fn main() {
 }
 
 fn build_manual_house() {
-    let manual_house = Box::new(WoodFloorHouseBuilder::new())
+    let manual_house = Box::new(FancyHouseBuilder::new())
         .add_rooms_of_sizes(vec![10, 10, 10])
         .add_bathrooms_of_sizes(vec![10])
         .pool_of_size(30)
@@ -25,7 +25,7 @@ fn build_manual_house() {
 
 fn build_fancy_house() {
     let fancy_house =
-        HouseBuildDirector::new(Box::new(WoodFloorHouseBuilder::new())).build_fancy_house();
+        HouseBuildDirector::new(Box::new(FancyHouseBuilder::new())).build_fancy_house();
 
     match fancy_house {
         Ok(house) => println!("{}", house),

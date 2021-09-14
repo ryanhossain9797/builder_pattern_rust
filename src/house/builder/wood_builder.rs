@@ -1,13 +1,13 @@
 use super::*;
-pub struct WoodFloorHouseBuilder {
+pub struct FancyHouseBuilder {
     pub rooms: Vec<Room>,
     pub kitchen: Option<Kitchen>,
     pub bathrooms: Vec<Bathroom>,
     pub pool: Option<Pool>,
 }
 
-impl WoodFloorHouseBuilder {
-    pub fn new() -> WoodFloorHouseBuilder {
+impl FancyHouseBuilder {
+    pub fn new() -> FancyHouseBuilder {
         Self {
             rooms: Vec::new(),
             kitchen: None,
@@ -17,8 +17,8 @@ impl WoodFloorHouseBuilder {
     }
 }
 
-impl HouseBuilder for WoodFloorHouseBuilder {
-    fn add_rooms_of_sizes(mut self: Box<Self>, mut room_sizes: Vec<i8>) -> Box<dyn HouseBuilder> {
+impl HouseBuilder for FancyHouseBuilder {
+    fn add_rooms_of_sizes(mut self: Box<Self>, room_sizes: Vec<i8>) -> Box<dyn HouseBuilder> {
         self.rooms.append(
             &mut room_sizes
                 .iter()
@@ -34,7 +34,7 @@ impl HouseBuilder for WoodFloorHouseBuilder {
 
     fn add_bathrooms_of_sizes(
         mut self: Box<Self>,
-        mut bathroom_sizes: Vec<i8>,
+        bathroom_sizes: Vec<i8>,
     ) -> Box<dyn HouseBuilder> {
         self.bathrooms.append(
             &mut bathroom_sizes

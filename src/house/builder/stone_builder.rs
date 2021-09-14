@@ -18,7 +18,7 @@ impl StoneHouseBuilder {
 }
 
 impl HouseBuilder for StoneHouseBuilder {
-    fn add_rooms_of_sizes(mut self: Box<Self>, mut room_sizes: Vec<i8>) -> Box<dyn HouseBuilder> {
+    fn add_rooms_of_sizes(mut self: Box<Self>, room_sizes: Vec<i8>) -> Box<dyn HouseBuilder> {
         self.rooms.append(
             &mut room_sizes
                 .iter()
@@ -34,7 +34,7 @@ impl HouseBuilder for StoneHouseBuilder {
 
     fn add_bathrooms_of_sizes(
         mut self: Box<Self>,
-        mut bathroom_sizes: Vec<i8>,
+        bathroom_sizes: Vec<i8>,
     ) -> Box<dyn HouseBuilder> {
         self.bathrooms.append(
             &mut bathroom_sizes
