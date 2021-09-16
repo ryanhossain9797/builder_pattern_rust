@@ -9,6 +9,7 @@ async fn main() {
     build_manual_house();
     build_fancy_house();
     build_oldie_house();
+    build_fancy_and_oldie_house();
 }
 
 fn build_manual_house() {
@@ -25,8 +26,11 @@ fn build_manual_house() {
 }
 
 fn build_fancy_house() {
-    let fancy_house =
-        HouseBuildDirector::new(Box::new(FancyHouseBuilder::new())).build_fancy_house();
+    let mut director = HouseBuildDirector::new();
+    let builder = Box::new(FancyHouseBuilder::new());
+    director.update_builder(builder);
+
+    let fancy_house = director.build_fancy_house();
 
     match fancy_house {
         Ok(house) => println!("{}", house),
@@ -35,8 +39,34 @@ fn build_fancy_house() {
 }
 
 fn build_oldie_house() {
-    let oldie_house =
-        HouseBuildDirector::new(Box::new(StoneHouseBuilder::new())).build_basic_house();
+    let mut director = HouseBuildDirector::new();
+    let builder = Box::new(StoneHouseBuilder::new());
+    director.update_builder(builder);
+
+    let oldie_house = director.build_basic_house();
+
+    match oldie_house {
+        Ok(house) => println!("{}", house),
+        Err(err) => println!("{}", err),
+    }
+}
+
+fn build_fancy_and_oldie_house() {
+    let mut director = HouseBuildDirector::new();
+    let builder = Box::new(FancyHouseBuilder::new());
+    director.update_builder(builder);
+
+    let fancy_house = director.build_fancy_house();
+
+    match fancy_house {
+        Ok(house) => println!("{}", house),
+        Err(err) => println!("{}", err),
+    }
+
+    let builder = Box::new(StoneHouseBuilder::new());
+    director.update_builder(builder);
+
+    let oldie_house = director.build_basic_house();
 
     match oldie_house {
         Ok(house) => println!("{}", house),
