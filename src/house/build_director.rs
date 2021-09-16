@@ -17,10 +17,7 @@ impl HouseBuildDirector {
     }
 
     pub fn build_fancy_house(&mut self) -> Result<House, String> {
-        let mut builder = None;
-        swap(&mut self.builder, &mut builder);
-
-        builder
+        take(&mut self.builder)
             .ok_or_else(|| NO_BUILDER.to_string())?
             .add_rooms_of_sizes(vec![40, 40, 40, 40])
             .add_bathrooms_of_sizes(vec![10, 10, 10])
